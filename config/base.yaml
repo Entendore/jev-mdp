@@ -1,0 +1,36 @@
+# `jev/config.py` merges [engine] over defaults; every key maps 1:1 to a
+# JevMDP constructor argument.
+engine:
+  dim: 128
+  seed: 0
+  k: 24                      # state-matrix clusters (k-means++)
+  gamma: 0.9                 # discount for episodic planning
+  dirichlet_alpha: 0.5       # Jeffreys smoothing on the P matrix
+  kappa: 20.0                # neural<->empirical blend trust constant
+  talpha: 0.5                # Dirichlet prior on transition counts
+  n_min: 8                   # SPIBB support threshold
+  memory_enabled: true       # v9.2 kNN posterior blend
+  ood_fpr: 0.05              # energy-detector ID quantile
+  belief_enabled: false      # v7.9 GRU belief state
+  evidential: false          # v6.6 Dirichlet heads
+
+terminals:
+  resolved: 1.0
+  escalated: -0.25
+  failed: -1.0
+
+training:
+  supervised: { epochs: 40, lr: 0.001, smoothing: 0.05 }
+  rl: { epochs: 6, lam: 0.5, ent: 0.02 }
+  policy: { rounds: 3, tau0: 1.0, tau_min: 0.15, anchor: 0.2 }
+
+serving:
+  gittins_gamma: 0.95
+  query_cost: 0.02
+  crc_alpha_R: 0.1
+  compile: { fidelity_target: 0.95, depth: 5 }
+
+evaluation:
+  hcope_delta: 0.05
+  verify_spec: { failed: 0.12 }
+  rliable_seeds: 5
